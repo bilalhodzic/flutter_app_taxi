@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
+import 'package:flutter_app/widgets/custom_button.dart';
+import 'package:flutter_app/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -18,12 +20,16 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isError = false;
   bool terms = false;
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     emailController.text = 'admin@admin.com';
     pwdController.text = 'qweasd';
     super.initState();
   }
+
+  login() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +50,79 @@ class _LoginScreenState extends State<LoginScreen> {
             height: h * 133,
           ),
           sh(30),
-  Form(child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Text('Login',
-    style:TextStyle(fontSize: b*24,
-    fontWeight: FontWeight.w900, letterSpacing: 0.65)),
-    sh(30),
-    TextField(controller: emailController,),
-    sh(20),
-    TextField(controller: pwdController,),
-    sh(20),
-    InkWell(child: Text(
-      'Forget Password?',
-      style:TextStyle(fontWeight: FontWeight.w700,
-      color: Colors.black,
-      fontSize: b*14)))
+          Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Login',
+                      style: TextStyle(
+                          fontSize: b * 24,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.65)),
+                  sh(30),
+                  CustomTextField(
+                    controller: emailController,
+                    label: 'Enter email',
+                    validator: (value) {
+                      Pattern emailPattern =
+                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                      RegExp regex = new RegExp(emailPattern.toString());
+                      if (value!.isEmpty) {
+                        setState(() {
+                          isError = true;
+                        });
+                        return 'Field cannot be empty!';
+                      } else if ((!regex.hasMatch(value.trim()))) {
+                        setState(() {
+                          isError = true;
+                        });
+                        return 'Email is not valid!';
+                      } else
+                        return null;
+                    },
+                  ),
+                  sh(20),
+                  CustomTextFieldPassword(
+                    controller: pwdController,
+                    label: 'Enter password',
+                    error: isError,
+                    validator: (val) {
+                      if (val!.trim() == "") {
+                        setState(() {
+                          isError = true;
+                        });
+                        return 'Field cannot be empty';
+                      } else {
+                        setState(() {
+                          isError = false;
+                        });
+                        return null;
+                      }
+                    },
+                  ),
+                  sh(20),
+                  InkWell(
+                      child: Text('Forget Password?',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                              fontSize: b * 14))),
+                  sh(20),
+                  Center(
+                      child: CustomButton(
+                    label: 'Login',
+                    onPressed: () async {
+                      FocusScope.of(context).unfocus();
+                      if (!_formKey.currentState!.validate()) return null;
 
-  ],))
+                      isPressed = true;
+                      setState(() {});
+                      login();
+                    },
+                  )),
+                ],
+              ))
         ]),
       )),
     );
