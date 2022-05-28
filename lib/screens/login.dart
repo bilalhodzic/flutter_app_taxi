@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/providers/auth_provider.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
 import 'package:flutter_app/widgets/custom_button.dart';
 import 'package:flutter_app/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -29,7 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  login() async {}
+  login() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataToSend = {
+      'userName': emailController.text,
+      'password': pwdController.text
+    };
+    await authProvider.login(dataToSend);
+  }
 
   @override
   Widget build(BuildContext context) {

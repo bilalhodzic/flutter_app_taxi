@@ -101,7 +101,7 @@ class CustomTextField extends StatelessWidget {
             errorStyle: TextStyle(
               fontSize: b * 10,
               fontWeight: FontWeight.w400,
-              color: Colors.black,
+              color: warningColor,
               letterSpacing: spacing ?? 0,
             ),
             contentPadding: EdgeInsets.symmetric(
@@ -138,8 +138,8 @@ class CustomTextFieldPassword extends StatefulWidget {
     this.vertPad,
     this.hint,
     this.validator,
-    this.error,
-    this.isMisMatch,
+    this.error = false,
+    this.isMisMatch = false,
   });
 
   final String? label;
