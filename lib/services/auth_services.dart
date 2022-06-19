@@ -3,7 +3,8 @@ import 'package:flutter_app/models/user_model.dart';
 
 class AuthServices {
   static Future loginService(data) async {
-    final res = ApiModels().postRequest('authentication/login', data);
+    final res =
+        await ApiModels().postRequest(url: 'authentication/login', data: data);
 
     return res;
   }

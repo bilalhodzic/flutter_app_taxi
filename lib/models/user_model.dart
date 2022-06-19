@@ -13,9 +13,9 @@ class Userinfo {
   @required
   DateTime? userCreatedTime;
   @required
-  Bool? isActive;
+  bool? isActive;
   @required
-  Bool? verifiedAccount;
+  bool? verifiedAccount;
   String? refreshTOken;
   int? locationId;
   String? userName;
@@ -52,24 +52,24 @@ class Userinfo {
       this.verifiedAccount,
       this.emailConfirmed});
 
-  Userinfo.fromJson(Map<String, dynamic> json) {
+  Userinfo.fromJson(json) {
     id = json['Id'];
     firstName = json['FirstName'];
     lastName = json['LastName'];
-    locationId = json['LocationId'] ?? 0;
     pin = json['Pin'] ?? 0;
-    userName = json['user_name'] ?? json['name'];
     userType = json['UserType'];
-    phoneCode = json['phone_code'] ?? "+91";
-    email = json['Email'] ?? json['email'];
+    isActive = json['IsActive'];
+    userCreatedTime = DateTime.parse(json['UserCreatedTime']);
     refreshTOken = json['RefreshToken'] ?? "";
-    photoUrl = json['PhotoUrl'] ?? "";
-    isActive = json['IsActive'] ?? 1;
-    phoneNumberConfirmed = json['PhoneNumberConfirmed'] ?? 0;
-    userCreatedTime = json['UserCreatedTime'];
     verifiedAccount = json['VerifiedAccount'] ?? 0;
-    emailConfirmed = json['EmailConfirmed'] ?? 0;
-    phoneNumber = json['PhoneNumber'] ?? '';
+    // locationId = json['LocationId'] ?? 0;
+    // userName = json['user_name'] ?? json['name'];
+    // phoneCode = json['phone_code'] ?? "+91";
+    // email = json['Email'] ?? json['email'];
+    // photoUrl = json['PhotoUrl'] ?? "";
+    // phoneNumberConfirmed = json['PhoneNumberConfirmed'] ?? 0;
+    // emailConfirmed = json['EmailConfirmed'] ?? 0;
+    // phoneNumber = json['PhoneNumber'] ?? '';
   }
 
   // Map<String, dynamic> toJson() {

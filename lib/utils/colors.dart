@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const Color secondaryColor = Color(0xFF989F00);
 const Color primaryColor = Color(0xffDAE238);
 const Color borderColor = Color(0xffe5e5e5);
-const Color warningColor = Color.fromARGB(255, 150, 12, 12);
+const Color warningColor = Color.fromARGB(255, 202, 18, 18);
 
 const Gradient buttonGradient = LinearGradient(
   colors: [primaryColor, primaryColor],

@@ -1,42 +1,35 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/models/user_model.dart';
 import 'package:flutter_app/services/auth_services.dart';
+import 'package:flutter_app/services/user_service.dart';
+import 'package:http/http.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 class AuthProvider extends ChangeNotifier {
-  Userinfo? _user;
-  Userinfo? get user => _user;
+  String? token;
+  String? error;
 
-  Future<void> setUser(Userinfo? usr) async {
-    _user = usr;
+  setError(err) {
+    error = err;
+    notifyListeners();
   }
 
+//**
+//Ovo je funckija */
   Future<void> login(data) async {
     try {
-      print(data);
-      inspect(data);
-      var res = await AuthServices.loginService(data);
-      log(res);
-      print(res);
+      Response res = await AuthServices.loginService(data);
+      if (res.statusCode == 200) {
+        token = jsonDecode(res.body)['Token'];
 
-      // _user = Userinfo.fromJson(res['data']['userinfo']);
-
-      // final res2 = await ProfileServices.getProfileData();
-      // final data = res2['data'];
-      // _user!.nationality = data['nationality'] ?? "null";
-      // _user!.address = data['address'] ?? "";
-      // _user!.docType = data['doc_type'];
-      // _user!.emailVerified = 1;
-
-      // if (data['doc_type'] == '1') {
-      //   await StorageServices.saveDocToLocal(docType: '1', data: data);
-      // } else if (data['doc_type'] == '0')
-      //   await StorageServices.saveDocToLocal(docType: '0', data: data);
-
-      // await PreferencesUtils.setUser(_user!);
-
-      notifyListeners();
+        var parsedToken = Jwt.parseJwt(token ?? '');
+        await UserService.getUser(int.parse(parsedToken['UserId']));
+      } else {
+        setError(jsonDecode(res.body)['ERROR'][0]);
+      }
     } catch (e) {
       print(e);
       throw e;

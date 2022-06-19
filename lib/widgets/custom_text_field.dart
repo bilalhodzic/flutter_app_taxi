@@ -129,18 +129,18 @@ class CustomTextField extends StatelessWidget {
 }
 
 class CustomTextFieldPassword extends StatefulWidget {
-  CustomTextFieldPassword({
-    @required this.label,
-    @required this.controller,
-    this.inputType,
-    this.size,
-    this.spacing,
-    this.vertPad,
-    this.hint,
-    this.validator,
-    this.error = false,
-    this.isMisMatch = false,
-  });
+  CustomTextFieldPassword(
+      {@required this.label,
+      @required this.controller,
+      this.inputType,
+      this.size,
+      this.spacing,
+      this.vertPad,
+      this.hint,
+      this.validator,
+      this.error = false,
+      this.isMisMatch = false,
+      this.onChanged});
 
   final String? label;
   final TextEditingController? controller;
@@ -152,7 +152,7 @@ class CustomTextFieldPassword extends StatefulWidget {
   final bool? error;
   final String? Function(String?)? validator;
   bool? isMisMatch;
-
+  final Function(String)? onChanged;
   @override
   _AppTextFieldPasswordState createState() => _AppTextFieldPasswordState();
 }
@@ -189,6 +189,7 @@ class _AppTextFieldPasswordState extends State<CustomTextFieldPassword> {
             children: [
               Expanded(
                 child: TextFormField(
+                  onChanged: widget.onChanged,
                   validator: widget.validator ??
                       (val) {
                         return null;
