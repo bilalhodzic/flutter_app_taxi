@@ -5,7 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
 import 'package:flutter_app/providers/user_provider.dart';
+import 'package:flutter_app/screens/forgot_password.dart';
 import 'package:flutter_app/screens/mode_selector.dart';
+import 'package:flutter_app/screens/register.dart';
+import 'package:flutter_app/services/auth_services.dart';
 import 'package:flutter_app/utils/colors.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
 import 'package:flutter_app/widgets/custom_button.dart';
@@ -25,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isVisibilty = false;
   bool isPressed = false;
 
-  bool isError = false;
+  String passwordError = '';
   bool terms = false;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -38,15 +41,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   login() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final dataToSend = {
       'userName': emailController.text,
       'password': pwdController.text
     };
     try {
-      await authProvider.login(dataToSend);
+      await AuthServices.loginService(dataToSend);
 
       var userProvider = Provider.of<UserProvider>(context, listen: false);
+      print(userProvider);
       if (userProvider.user != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -100,14 +103,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         RegExp regex = new RegExp(emailPattern.toString());
                         if (value!.isEmpty) {
                           setState(() {
-                            isError = true;
+                            passwordError = 'Polje ne smije biti prazno';
                           });
-                          return 'Field cannot be empty!';
+                          //return 'Field cannot be empty!';
                         } else if ((!regex.hasMatch(value.trim()))) {
                           setState(() {
-                            isError = true;
+                            passwordError = 'Email nije validan';
                           });
-                          return 'Email is not valid!';
+                          // return 'Email is not valid!';
                         } else
                           return null;
                       },
@@ -116,19 +119,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     CustomTextFieldPassword(
                       controller: pwdController,
                       onChanged: (value) {
-                        authProvider.setError(null);
+                        authProvider.setError(null, 'login');
                       },
                       label: 'Enter password',
-                      error: isError,
+                      error: passwordError,
                       validator: (val) {
                         if (val!.trim() == "") {
                           setState(() {
-                            isError = true;
+                            passwordError = 'Polje ne smije biti prazno';
                           });
-                          return 'Field cannot be empty';
+                          //  return 'Field cannot be empty';
                         } else {
                           setState(() {
-                            isError = false;
+                            passwordError = '';
                           });
                           return null;
                         }
@@ -136,20 +139,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     sh(20),
                     Consumer<AuthProvider>(builder: (_, notifier, __) {
-                      if (notifier.error != null)
+                      if (notifier.loginError != null) {
                         return Column(
                           children: [
                             Text(
-                              notifier.error!,
+                              notifier.loginError!,
                               style: TextStyle(color: warningColor),
                             ),
                             sh(20)
                           ],
                         );
+                      }
 
-                      return SizedBox();
+                      return const SizedBox();
                     }),
                     InkWell(
+                        onTap: () => {
+                              /// Navigating to the ForgotPasswordScreen.
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ForgotPasswordScreen()))
+                            },
                         child: Text('Zaboravljena Sifra?',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700,
@@ -268,11 +277,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (_) => RegisterScreen(),
-                          //   ),
-                          // );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const RegisterScreen(),
+                            ),
+                          );
                         },
                         child: Text(
                           'Napravi racun',

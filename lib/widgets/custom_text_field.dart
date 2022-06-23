@@ -117,7 +117,7 @@ class CustomTextField extends StatelessWidget {
             border: outlineInputBorder,
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: warningColor,
               ),
             ),
             enabledBorder: outlineInputBorder,
@@ -138,7 +138,7 @@ class CustomTextFieldPassword extends StatefulWidget {
       this.vertPad,
       this.hint,
       this.validator,
-      this.error = false,
+      this.error = '',
       this.isMisMatch = false,
       this.onChanged});
 
@@ -149,7 +149,7 @@ class CustomTextFieldPassword extends StatefulWidget {
   final double? spacing;
   final double? vertPad;
   final String? hint;
-  final bool? error;
+  final String? error;
   final String? Function(String?)? validator;
   bool? isMisMatch;
   final Function(String)? onChanged;
@@ -181,7 +181,7 @@ class _AppTextFieldPasswordState extends State<CustomTextFieldPassword> {
           ),
           decoration: BoxDecoration(
             border: Border.all(
-              color: widget.error! ? secondaryColor : borderColor,
+              color: widget.error != '' ? warningColor : borderColor,
             ),
             borderRadius: BorderRadius.circular(4),
           ),
@@ -214,10 +214,8 @@ class _AppTextFieldPasswordState extends State<CustomTextFieldPassword> {
                       color: Colors.black.withOpacity(0.8),
                       letterSpacing: widget.spacing ?? 0,
                     ),
-                    errorStyle: TextStyle(
-                      fontSize: 0,
-                      height: 0,
-                    ),
+                    errorStyle:
+                        TextStyle(fontSize: 0, height: 0, color: warningColor),
                     contentPadding: EdgeInsets.symmetric(vertical: 12),
                     focusedBorder: InputBorder.none,
                     focusedErrorBorder: InputBorder.none,
@@ -237,29 +235,29 @@ class _AppTextFieldPasswordState extends State<CustomTextFieldPassword> {
                 child: Icon(
                   isVisibilty ? Icons.visibility : Icons.visibility_off,
                   size: 22,
-                  color: primaryColor,
+                  color: Colors.black,
                 ),
               ),
             ],
           ),
         ),
         sh(5),
-        widget.error!
+        widget.error != ''
             ? widget.isMisMatch!
                 ? Text(
-                    "     " + "* Passwords don't match",
+                    widget.error!,
                     style: TextStyle(
                       fontSize: b * 10,
                       fontWeight: FontWeight.w400,
-                      color: secondaryColor,
+                      color: warningColor,
                     ),
                   )
                 : Text(
-                    "     " + 'Field cannot be empty!',
+                    widget.error!,
                     style: TextStyle(
                       fontSize: b * 10,
                       fontWeight: FontWeight.w400,
-                      color: secondaryColor,
+                      color: warningColor,
                     ),
                   )
             : sh(0),

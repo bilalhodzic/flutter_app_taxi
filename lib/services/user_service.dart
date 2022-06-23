@@ -12,7 +12,7 @@ class UserService {
     if (res.statusCode == 200) {
       var decoded = jsonDecode(res.body);
       UserProvider.setUser(Userinfo.fromJson(decoded));
-      //inspect(Userinfo.fromJson(decoded));
+      inspect(Userinfo.fromJson(decoded));
     }
 
     return res;
