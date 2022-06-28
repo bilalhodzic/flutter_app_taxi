@@ -9,6 +9,6 @@ class UserProvider extends ChangeNotifier {
 
   static void setUser(Userinfo? usr) {
     _user = usr;
-    inspect(_user);
+    // inspect(_user);
   }
 }

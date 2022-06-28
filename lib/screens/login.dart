@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await AuthServices.loginService(dataToSend);
 
       var userProvider = Provider.of<UserProvider>(context, listen: false);
-      print(userProvider);
+      // print(userProvider);
       if (userProvider.user != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -59,6 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (e) {
       print(e);
+    } finally {
+      isPressed = false;
     }
   }
 
@@ -166,17 +168,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: b * 14))),
                     sh(20),
                     Center(
-                        child: CustomButton(
-                      label: 'Login',
-                      onPressed: () async {
-                        FocusScope.of(context).unfocus();
-                        if (!_formKey.currentState!.validate()) return null;
+                        child: isPressed
+                            ? LoadingButton()
+                            : CustomButton(
+                                label: 'Login',
+                                onPressed: () async {
+                                  FocusScope.of(context).unfocus();
+                                  if (!_formKey.currentState!.validate())
+                                    return null;
 
-                        isPressed = true;
-                        setState(() {});
-                        login();
-                      },
-                    )),
+                                  isPressed = true;
+                                  setState(() {});
+                                  login();
+                                },
+                              )),
                     sh(18),
                     Row(
                       children: [

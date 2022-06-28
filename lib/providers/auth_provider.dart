@@ -20,7 +20,7 @@ class AuthProvider extends ChangeNotifier {
     return _instance!;
   }
 
-  AuthProvider._() {}
+  AuthProvider._();
   AuthProvider._internal();
 
   String? token;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/self%20drive/bottomNavSelfDrive.dart';
 import 'package:flutter_app/utils/colors.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
 import 'package:provider/provider.dart';
@@ -63,11 +64,11 @@ class _ModeSelectorScreenState extends State<ModeSelectorScreen> {
                   });
 
                   Future.delayed(Duration(milliseconds: 20), () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (_) => HomeMain(),
-                    //   ),
-                    // );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => BottomNavSelfDrive(),
+                      ),
+                    );
                   });
                 },
                 child: Container(
