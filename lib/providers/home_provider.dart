@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/models/brand_model.dart';
 import 'package:flutter_app/models/city_model.dart';
+import 'package:flutter_app/models/hub_model.dart';
 import 'package:flutter_app/models/vehicle_model.dart';
 import 'package:flutter_app/models/vehicle_type_model.dart';
 
@@ -34,8 +35,8 @@ class HomeProvider extends ChangeNotifier {
   final List<Map<String, List<BrandModel>>> _brandModel = [];
   List<Map<String, List<BrandModel>>> get brandModel => [..._brandModel];
 
-  //Prepraviti kad ubacimo hubove
-  List allHub = [];
+  List<Hub> _allHub = [];
+  List<Hub> get allHub => [..._allHub];
 
   void setAvailableModels(List<VehicleModel> vehicles) {
     _availableModel = vehicles;
@@ -45,8 +46,9 @@ class HomeProvider extends ChangeNotifier {
     _vehicleType = types;
   }
 
-  // List<Hub> _allHub = [];
-  // List<Hub> get allHub => [..._allHub];
+  void setAllHubs(List<Hub> hubs) {
+    _allHub = hubs;
+  }
 
   // Future<bool> checkForCity() async {
   //   final res = await PreferencesUtils.getPref(PreferencesUtils.currentCity);

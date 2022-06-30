@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/api/api_model.dart';
 import 'package:flutter_app/models/city_model.dart';
 import 'package:flutter_app/models/current_loc_model.dart';
+import 'package:flutter_app/models/hub_model.dart';
 import 'package:flutter_app/models/vehicle_model.dart';
 import 'package:flutter_app/providers/home_provider.dart';
+import 'package:flutter_app/services/home_service.dart';
 import 'package:flutter_app/utils/appBar.dart';
 import 'package:flutter_app/utils/colors.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
@@ -47,10 +49,10 @@ class _BookCarState extends State<BookCar> {
 
   CurrentLoc? currentLoc;
 
-  String selectedPickCity = 'Izaberite grad preuzimanja';
-  String selectedDropCity = 'Izaberite grad dostave';
-  int? selectedPickCityID;
-  int? selectedDropCityID;
+  String selectedPickCity = 'Grad preuzimanja';
+  String selectedDropCity = 'Grad dostave';
+  String? selectedPickCityID;
+  String? selectedDropCityID;
 
   bool isManualAddrPick = false, isManualAddrDrop = false;
 
@@ -518,11 +520,11 @@ class _BookCarState extends State<BookCar> {
                               Container(
                                 width: SizeConfig.screenWidth,
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.red),
+                                  border: Border.all(color: borderColor),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: FutureBuilder(
-                                    future: getCities,
+                                    future: HomeService.getHubs(),
                                     builder: (context, snap) {
                                       if (snap.connectionState ==
                                           ConnectionState.done) {
@@ -546,19 +548,12 @@ class _BookCarState extends State<BookCar> {
                                             value: -1,
                                           ),
                                         );
-                                        menuItem.add(
-                                          hubItem(),
-                                        );
-                                        menuItem.addAll(
-                                            provider.allHub.where((ele) {
-                                          return ele.cityID ==
-                                                  selectedPickCityID
-                                              ? true
-                                              : false;
-                                        }).map((e) {
+
+                                        menuItem
+                                            .addAll(provider.allHub.map((e) {
                                           return DropdownMenuItem(
-                                            child: Text(e.address ?? ""),
-                                            value: e.hubID,
+                                            child: Text(e.address),
+                                            value: e.id,
                                           );
                                         }).toList());
 
@@ -577,7 +572,7 @@ class _BookCarState extends State<BookCar> {
                                           ),
                                           hint: Text(
                                             pickUpAdd.text == ''
-                                                ? PickUpAddrLbl
+                                                ? 'Adresa preuzimanja'
                                                 : pickUpAdd.text,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
@@ -591,15 +586,17 @@ class _BookCarState extends State<BookCar> {
                                             } else {
                                               final selectedHub =
                                                   provider.allHub.where((ele) {
-                                                return ele.hubID == val
+                                                return ele.id == val
                                                     ? true
                                                     : false;
                                               }).first;
+                                              selectedPickCity =
+                                                  selectedHub.city;
                                               pickUpAdd.text =
-                                                  selectedHub.address ?? "";
+                                                  selectedHub.address;
                                               pickCoordinates = LatLng(
-                                                  selectedHub.lat!,
-                                                  selectedHub.long!);
+                                                  selectedHub.latitude,
+                                                  selectedHub.longitude);
                                               isManualAddrPick = false;
                                               setState(() {});
                                             }
@@ -638,7 +635,7 @@ class _BookCarState extends State<BookCar> {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: FutureBuilder(
-                                  future: getCities,
+                                  future: HomeService.getHubs(),
                                   builder: (context, snap) {
                                     if (snap.connectionState ==
                                         ConnectionState.done)
@@ -662,22 +659,22 @@ class _BookCarState extends State<BookCar> {
                                         hint: Text(
                                           selectedDropCity != DroptoCityLabel
                                               ? selectedDropCity
-                                              : DroptoCityLabel,
+                                              : 'Grad dostave',
                                           style: textStyle,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         value: null,
-                                        items: provider.cities.map((e) {
+                                        items: provider.allHub.map((e) {
                                           return DropdownMenuItem(
-                                            child: Text(e.name!),
+                                            child: Text(e.city),
                                             value: e,
                                           );
                                         }).toList(),
-                                        onChanged: (City? val) {
+                                        onChanged: (Hub? val) {
                                           dropOffAdd.clear();
-                                          selectedDropCityID = val!.id!;
-                                          selectedDropCity = val.name!;
+                                          selectedDropCityID = val!.name;
+                                          selectedDropCity = val.name;
 
                                           setState(() {});
                                         },
@@ -725,7 +722,7 @@ class _BookCarState extends State<BookCar> {
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: FutureBuilder(
-                                      future: getCities,
+                                      future: HomeService.getHubs(),
                                       builder: (context, snap) {
                                         if (snap.connectionState ==
                                             ConnectionState.done) {
@@ -749,20 +746,12 @@ class _BookCarState extends State<BookCar> {
                                               value: -1,
                                             ),
                                           );
-                                          menuItem.add(
-                                            hubItem(),
-                                          );
 
-                                          menuItem.addAll(
-                                              provider.allHub.where((ele) {
-                                            return ele.cityID ==
-                                                    selectedDropCityID
-                                                ? true
-                                                : false;
-                                          }).map((e) {
+                                          menuItem
+                                              .addAll(provider.allHub.map((e) {
                                             return DropdownMenuItem(
-                                              child: Text(e.address ?? ""),
-                                              value: e.hubID,
+                                              child: Text(e.address),
+                                              value: e.id,
                                             );
                                           }).toList());
 
@@ -781,7 +770,7 @@ class _BookCarState extends State<BookCar> {
                                             ),
                                             hint: Text(
                                               dropOffAdd.text == ''
-                                                  ? DropOffAddrLbl
+                                                  ? 'Adresa dostave'
                                                   : dropOffAdd.text,
                                               style: textStyle,
                                             ),
@@ -794,15 +783,17 @@ class _BookCarState extends State<BookCar> {
                                                 final selectedHub = provider
                                                     .allHub
                                                     .where((ele) {
-                                                  return ele.hubID == val
+                                                  return ele.id == val
                                                       ? true
                                                       : false;
                                                 }).first;
+                                                selectedDropCity =
+                                                    selectedHub.city;
                                                 dropOffAdd.text =
-                                                    selectedHub.address ?? "";
+                                                    selectedHub.address;
                                                 dropCoordinates = LatLng(
-                                                    selectedHub.lat!,
-                                                    selectedHub.long!);
+                                                    selectedHub.latitude,
+                                                    selectedHub.longitude);
                                                 isManualAddrDrop = false;
                                                 setState(() {});
                                               }
@@ -1135,30 +1126,27 @@ class _BookCarState extends State<BookCar> {
   TimeOfDay? endTime;
 
   Future<void> selectTime(BuildContext context, bool isStart) async {
-    String startTimeOnUpdate =
-        DateTime.parse(startDate).toString().split(' ').first +
-            ' ' +
-            startTime!.format(context);
+    String? startTimeOnUpdate;
+    String? endTimeOnUpdate;
+    if (startTime != null) {
+      startTimeOnUpdate =
+          DateTime.parse(startDate).toString().split(' ').first +
+              ' ' +
+              startTime!.format(context);
+    }
 
-    String endTimeOnUpdate =
-        DateTime.parse(endDate).toString().split(' ').first +
-            ' ' +
-            endTime!.format(context);
+    if (endTime != null) {
+      endTimeOnUpdate = DateTime.parse(endDate).toString().split(' ').first +
+          ' ' +
+          endTime!.format(context);
+    }
 
-    TimeOfDay tempTime = TimeOfDay.fromDateTime(
-      isStart
-          ? (widget.isUpdate!
-              ? DateTime.parse(startTimeOnUpdate)
-              : currentLoc!.pickTime!)
-          : (widget.isUpdate!
-              ? DateTime.parse(endTimeOnUpdate)
-              : currentLoc!.dropTime!),
-    );
+    TimeOfDay? tempTime;
 
     // ignore: non_constant_identifier_names
     final TimeOfDay? picked_s = await showTimePicker(
       context: context,
-      initialTime: tempTime,
+      initialTime: startTime ?? TimeOfDay.now(),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(

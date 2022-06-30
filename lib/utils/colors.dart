@@ -48,7 +48,7 @@ Map<int, Color> swatch = {
 };
 MaterialColor colorSwatch = MaterialColor(0xffDAE238, swatch);
 
-DropdownMenuItem<int> hubItem() {
+DropdownMenuItem<int> hubItem(String name) {
   var h = SizeConfig.screenHeight / 812;
   var b = SizeConfig.screenWidth / 375;
 
@@ -62,7 +62,7 @@ DropdownMenuItem<int> hubItem() {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
-        HubLabel,
+        name,
         style: TextStyle(
           color: Colors.white,
           fontSize: b * 12,

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 const realDeviceUri = 'https://192.168.0.23:49155/';
 const localUri = 'http://10.0.2.2:44310/';
-const ngRokUri = 'https://ffc9-178-236-86-58.eu.ngrok.io/';
+const ngRokUri = 'https://5dad-178-236-86-58.eu.ngrok.io/';
 const googleApiKey = 'AIzaSyB59NIKNZNu-1n7WygHjYedf2rqjj-xMnk';
 
 class ApiModels {

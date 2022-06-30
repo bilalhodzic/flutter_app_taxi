@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_app/api/api_model.dart';
+import 'package:flutter_app/models/hub_model.dart';
 import 'package:flutter_app/models/vehicle_model.dart';
 import 'package:flutter_app/models/vehicle_type_model.dart';
 import 'package:flutter_app/providers/home_provider.dart';
@@ -44,5 +45,23 @@ class HomeService {
       print('Error in getSelfDrivingVehicles: $e');
     }
     return vehicles;
+  }
+
+  static Future getHubs() async {
+    try {
+      Response res = await ApiModels().getRequest(url: 'hub');
+      inspect(res);
+
+      if (res.statusCode == 200) {
+        List<Hub> hubs = [];
+        var data = json.decode(res.body);
+        data.forEach((element) {
+          hubs.add(Hub.fromJson(element));
+        });
+        HomeProvider.instance.setAllHubs(hubs);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter_app/screens/forgot_password.dart';
 import 'package:flutter_app/screens/mode_selector.dart';
 import 'package:flutter_app/screens/register.dart';
 import 'package:flutter_app/services/auth_services.dart';
+import 'package:flutter_app/services/home_service.dart';
 import 'package:flutter_app/utils/colors.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
 import 'package:flutter_app/widgets/custom_button.dart';
@@ -51,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
       // print(userProvider);
       if (userProvider.user != null) {
+        HomeService.getHubs();
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (_) => ModeSelectorScreen(),
