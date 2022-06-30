@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-const realDeviceUri = 'https://192.168.0.15:49155/';
+const realDeviceUri = 'https://192.168.0.23:49155/';
 const localUri = 'http://10.0.2.2:44310/';
-const ngRokUri = 'https://1a5f-93-180-105-223.eu.ngrok.io/';
+const ngRokUri = 'https://ffc9-178-236-86-58.eu.ngrok.io/';
+const googleApiKey = 'AIzaSyB59NIKNZNu-1n7WygHjYedf2rqjj-xMnk';
 
 class ApiModels {
   // final apiUrl = 'https://localhost:44310/';
 
-  String apiUrl = realDeviceUri;
+  String apiUrl = ngRokUri;
 
   Future postRequest({required String url, Object data = const {}}) async {
     final dataJson = jsonEncode(data);

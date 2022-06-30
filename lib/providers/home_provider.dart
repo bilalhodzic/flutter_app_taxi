@@ -25,14 +25,25 @@ class HomeProvider extends ChangeNotifier {
   List<City> _cities = [];
   List<City> get cities => [..._cities];
 
-  final List<VehicleType> _vehicleType = [];
+  List<VehicleType> _vehicleType = [];
   List<VehicleType> get vehicleType => [..._vehicleType];
 
-  final List<VehicleModel> _availableModel = [];
+  List<VehicleModel> _availableModel = [];
   List<VehicleModel> get availableModel => [..._availableModel];
 
   final List<Map<String, List<BrandModel>>> _brandModel = [];
   List<Map<String, List<BrandModel>>> get brandModel => [..._brandModel];
+
+  //Prepraviti kad ubacimo hubove
+  List allHub = [];
+
+  void setAvailableModels(List<VehicleModel> vehicles) {
+    _availableModel = vehicles;
+  }
+
+  void setVehicleTypes(List<VehicleType> types) {
+    _vehicleType = types;
+  }
 
   // List<Hub> _allHub = [];
   // List<Hub> get allHub => [..._allHub];

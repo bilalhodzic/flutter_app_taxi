@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 String timeFormatDate(DateTime _selectedTime) {
@@ -16,4 +17,11 @@ String dateFormatString(String date) {
   DateTime dateFormatted = DateTime.parse(date);
   var formatDate = DateFormat('dd-MM-yyyy').format(dateFormatted);
   return formatDate.toString();
+}
+
+String timeFormat(TimeOfDay _selectedTime) {
+  DateTime tempDate = DateFormat("hh:mm").parse(
+      _selectedTime.hour.toString() + ":" + _selectedTime.minute.toString());
+  var dateFormat = DateFormat("h:mm a");
+  return dateFormat.format(tempDate);
 }

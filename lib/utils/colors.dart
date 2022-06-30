@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/sizeConfig.dart';
+import 'package:flutter_app/utils/strings.dart';
 
 const Color secondaryColor = Color.fromARGB(255, 159, 143, 0);
 const Color primaryColor = Color.fromARGB(255, 231, 198, 35);
@@ -45,3 +47,30 @@ Map<int, Color> swatch = {
   900: primaryColor.withOpacity(1.0),
 };
 MaterialColor colorSwatch = MaterialColor(0xffDAE238, swatch);
+
+DropdownMenuItem<int> hubItem() {
+  var h = SizeConfig.screenHeight / 812;
+  var b = SizeConfig.screenWidth / 375;
+
+  return DropdownMenuItem<int>(
+    child: Container(
+      height: h * 23,
+      width: b * 120,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Color(0xff1a1a1a),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        HubLabel,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: b * 12,
+          letterSpacing: 0.6,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+    ),
+    value: -2,
+  );
+}

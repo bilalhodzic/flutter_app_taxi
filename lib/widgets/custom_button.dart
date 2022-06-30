@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(b * 4),
         ),
         child: Text(
-          label!.toUpperCase(),
+          'RENT',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,

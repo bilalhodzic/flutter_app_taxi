@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/auth_widget.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
+import 'package:flutter_app/providers/home_provider.dart';
 import 'package:flutter_app/providers/user_provider.dart';
 import 'package:flutter_app/utils/colors.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider.instance),
-        ChangeNotifierProvider(create: (_) => UserProvider())
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => HomeProvider.instance),
       ],
       child: MaterialApp(
         title: 'eTaxi',

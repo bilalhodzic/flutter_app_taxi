@@ -87,66 +87,31 @@ class VehicleCard extends StatelessWidget {
                     ),
                     sh(10),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: Text(
-                            LimitedLabel,
-                            style: TextStyle(
-                              fontSize: b * 12,
-                              color: Color(0xff3f3d56),
-                            ),
+                        Text(
+                          'Cijena po km:',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: b * 12,
+                            color: Color(0xff3f3d56),
                           ),
                         ),
-                        Expanded(
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            UnLimitedLabel,
+                            vehicle!.price!.toString() + ' KM',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: b * 12,
-                              color: Color(0xff3f3d56),
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xffa7a7a7),
                             ),
                           ),
                         ),
                       ],
                     ),
                     sh(3),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            vehicle!.isLimited != 'No'
-                                ? vehicle!.limitedPrice!.substring(
-                                      0,
-                                      vehicle!.limitedPrice!.indexOf('/'),
-                                    ) +
-                                    '/$DayLabel'
-                                : "No",
-                            style: TextStyle(
-                              fontSize: b * 12,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xffa7a7a7),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            vehicle!.isUnlimited != 'No'
-                                ? vehicle!.unlimitedPrice!.substring(
-                                      0,
-                                      vehicle!.unlimitedPrice!.indexOf('/'),
-                                    ) +
-                                    '/$DayLabel'
-                                : 'No',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: b * 12,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xffa7a7a7),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     sh(11),
                     CustomButton(
                       label: BookNowLabel,

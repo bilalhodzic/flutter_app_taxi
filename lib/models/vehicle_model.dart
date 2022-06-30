@@ -4,13 +4,12 @@ class VehicleModel {
   int? typeId;
   String? photo;
   String? vehicleName;
-  String? limitedPrice;
-  String? unlimitedPrice;
+  int? price;
   String? seater;
   String? fuelType;
   String? transmission;
-  String? year;
-  String? airBags;
+  int? year;
+  bool? airBags;
   String? isLimited;
   String? isUnlimited;
 
@@ -20,8 +19,7 @@ class VehicleModel {
       this.typeId,
       this.photo,
       this.vehicleName,
-      this.limitedPrice,
-      this.unlimitedPrice,
+      this.price,
       this.seater,
       this.fuelType,
       this.transmission,
@@ -31,38 +29,18 @@ class VehicleModel {
       this.isUnlimited});
 
   VehicleModel.fromJson(Map<String, dynamic> json) {
-    vehicleId = json['vehicle_id'];
-    modelId = json['model_id'];
-    typeId = json['type_id'];
-    photo = json['photo'];
-    vehicleName = json['vehicle_name'];
-    limitedPrice = json['limited_price'];
-    unlimitedPrice = json['unlimited_price'];
-    seater = json['seater'];
-    fuelType = json['fuel_type'];
-    transmission = json['transmission'];
-    year = json['year'];
-    airBags = json['air_bags'];
-    isLimited = json['is_limited'];
-    isUnlimited = json['is_unlimited'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['vehicle_id'] = this.vehicleId;
-    data['model_id'] = this.modelId;
-    data['type_id'] = this.typeId;
-    data['photo'] = this.photo;
-    data['vehicle_name'] = this.vehicleName;
-    data['limited_price'] = this.limitedPrice;
-    data['unlimited_price'] = this.unlimitedPrice;
-    data['seater'] = this.seater;
-    data['fuel_type'] = this.fuelType;
-    data['transmission'] = this.transmission;
-    data['year'] = this.year;
-    data['air_bags'] = this.airBags;
-    data['is_limited'] = this.isLimited;
-    data['is_unlimited'] = this.isUnlimited;
-    return data;
+    vehicleId = json['VehicleId'] ?? 0;
+    modelId = json['model_id'] ?? -1;
+    typeId = json['TypeId'];
+    photo = json['File'] ?? '';
+    vehicleName = json['Name'] ?? 'Bob the builder';
+    price = json['PricePerKm'] ?? '100';
+    seater = json['seater'] ?? '5';
+    fuelType = json['fuelType'] ?? 'Benzinjara';
+    transmission = json['Transmission'] ?? 'Manuelac';
+    year = json['Year'];
+    airBags = json['AirBag'] ?? false;
+    isLimited = json['is_limited'] ?? '';
+    isUnlimited = json['is_unlimited'] ?? '';
   }
 }

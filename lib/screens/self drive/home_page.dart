@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/current_loc_model.dart';
 import 'package:flutter_app/models/vehicle_type_model.dart';
 import 'package:flutter_app/providers/home_provider.dart';
+import 'package:flutter_app/screens/self%20drive/bookCar.dart';
 import 'package:flutter_app/services/home_service.dart';
 import 'package:flutter_app/utils/colors.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     //pickCoordinates: LatLng(0, 0),
   );
   VehicleType allVehicleType =
-      VehicleType(name: AllLabel, classId: -1, seats: 0, icon: "");
+      VehicleType(name: AllLabel, vehicleTypeId: -1, seats: 0, icon: "");
 
   int vehicleType = -1;
   bool isSearching = false;
@@ -287,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           sh(5),
                           FutureBuilder(
-                            future: getAvailableVehicle,
+                            future: HomeService.getSelfDrivingVehicles(),
                             builder: (context, snap) {
                               if (!(snap.connectionState ==
                                   ConnectionState.waiting)) {
@@ -328,23 +329,23 @@ class _HomePageState extends State<HomePage> {
                                         },
                                         child: VehicleCard(
                                           fun: () {
-                                            // Navigator.of(context).push(
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) => BookCar(
-                                            //       vehicle: vehicleType == -1
-                                            //           ? provider
-                                            //               .availableModel[index]
-                                            //           : provider.availableModel
-                                            //               .where((element) {
-                                            //               if (element.typeId ==
-                                            //                   vehicleType)
-                                            //                 return true;
-                                            //               else
-                                            //                 return false;
-                                            //             }).toList()[index],
-                                            //     ),
-                                            //   ),
-                                            // );
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => BookCar(
+                                                  vehicle: vehicleType == -1
+                                                      ? provider
+                                                          .availableModel[index]
+                                                      : provider.availableModel
+                                                          .where((element) {
+                                                          if (element.typeId ==
+                                                              vehicleType)
+                                                            return true;
+                                                          else
+                                                            return false;
+                                                        }).toList()[index],
+                                                ),
+                                              ),
+                                            );
                                           },
                                           vehicle: vehicleType == -1
                                               ? provider.availableModel[index]
@@ -389,32 +390,33 @@ class _HomePageState extends State<HomePage> {
                     child: FutureBuilder(
                       future: getClasses,
                       builder: (context, snap) {
-                        if (snap.connectionState == ConnectionState.done) {
-                          vehicleTypes.clear();
-                          vehicleTypes.add(allVehicleType);
-                          vehicleTypes.addAll(provider.vehicleType);
+                        print(snap.connectionState);
+                        // if (snap.connectionState == ConnectionState.done) {
+                        vehicleTypes.clear();
+                        vehicleTypes.add(allVehicleType);
+                        vehicleTypes.addAll(provider.vehicleType);
 
-                          return ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.symmetric(vertical: h * 8.2),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: vehicleTypes.length,
-                            itemBuilder: (context, index) {
-                              final vehicleType = vehicleTypes[index];
-                              return vehicleClassCard(vehicleType);
-                            },
-                          );
-                        } else {
-                          return ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.symmetric(vertical: h * 8.2),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return tempvehicleClassCard();
-                            },
-                          );
-                        }
+                        return ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          padding: EdgeInsets.symmetric(vertical: h * 8.2),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: vehicleTypes.length,
+                          itemBuilder: (context, index) {
+                            final vehicleType = vehicleTypes[index];
+                            return vehicleClassCard(vehicleType);
+                          },
+                        );
+                        // } else {
+                        //   return ListView.builder(
+                        //     physics: BouncingScrollPhysics(),
+                        //     padding: EdgeInsets.symmetric(vertical: h * 8.2),
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemCount: 10,
+                        //     itemBuilder: (context, index) {
+                        //       return tempvehicleClassCard();
+                        //     },
+                        //   );
+                        // }
                       },
                     ),
                   ),
@@ -471,7 +473,7 @@ class _HomePageState extends State<HomePage> {
     return InkWell(
       onTap: () {
         setState(() {
-          vehicleType = VehicleType.classId!;
+          vehicleType = VehicleType.vehicleTypeId!;
         });
       },
       child: Container(
@@ -480,7 +482,7 @@ class _HomePageState extends State<HomePage> {
         height: h * 58,
         width: b * 70,
         decoration: BoxDecoration(
-          color: vehicleType == VehicleType.classId
+          color: vehicleType == VehicleType.vehicleTypeId
               ? primaryColor
               : Color(0xfff9f9f9),
           borderRadius: BorderRadius.circular(4),
