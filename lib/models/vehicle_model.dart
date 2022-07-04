@@ -36,7 +36,7 @@ class VehicleModel {
     vehicleName = json['Name'] ?? 'Bob the builder';
     price = json['PricePerKm'] ?? '100';
     seater = json['seater'] ?? '5';
-    fuelType = json['fuelType'] ?? 'Benzinjara';
+    fuelType = json['FuelType'] ?? 'Benzinjara';
     transmission = json['Transmission'] ?? 'Manuelac';
     year = json['Year'];
     airBags = json['AirBag'] ?? false;

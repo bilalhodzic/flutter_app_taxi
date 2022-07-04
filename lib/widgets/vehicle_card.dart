@@ -3,6 +3,7 @@ import 'package:flutter_app/models/vehicle_model.dart';
 import 'package:flutter_app/utils/colors.dart';
 import 'package:flutter_app/utils/sizeConfig.dart';
 import 'package:flutter_app/utils/strings.dart';
+import 'package:flutter_app/widgets/cached_image.dart';
 import 'package:flutter_app/widgets/custom_button.dart';
 
 class VehicleCard extends StatelessWidget {
@@ -46,14 +47,13 @@ class VehicleCard extends StatelessWidget {
             children: [
               Hero(
                 tag: vehicle!.vehicleId!.toString(),
-                child: Container(),
-                // child: CachedImage(
-                //   imgUrl: vehicle!.photo!,
-                //   height: h * 95,
-                //   isGallery: false,
-                //   width: b * 148,
-                //   vehicleId: vehicle!.vehicleId.toString(),
-                // ),
+                child: CachedImage(
+                  imgUrl: vehicle!.photo!,
+                  height: h * 95,
+                  isGallery: false,
+                  width: b * 148,
+                  vehicleId: vehicle!.vehicleId.toString(),
+                ),
               ),
               sb(24),
               Expanded(

@@ -495,6 +495,7 @@ class _HomePageState extends State<HomePage> {
                 ? CachedNetworkImage(
                     imageUrl: VehicleType.icon!,
                     height: h * 26,
+                    fit: BoxFit.fitHeight,
                   )
                 : sh(0),
             Text(

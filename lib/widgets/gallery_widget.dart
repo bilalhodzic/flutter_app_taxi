@@ -34,8 +34,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
               return PhotoViewGalleryPageOptions(
                 minScale: PhotoViewComputedScale.contained,
                 maxScale: PhotoViewComputedScale.contained * 4,
-                imageProvider: NetworkImage(
-                    'https://ichef.bbci.co.uk/news/976/cpsprodpb/02C2/production/_122360700_gettyimages-1280424615.jpg'),
+                imageProvider: NetworkImage(widget.imgUrl),
               );
             },
             onPageChanged: (index) {

@@ -19,9 +19,6 @@ class SwipeCar extends StatefulWidget {
 }
 
 class _SwipeCarState extends State<SwipeCar> {
-  VehicleModel? detail;
-  List url = [];
-
   @override
   void initState() {
     super.initState();
@@ -52,14 +49,14 @@ class _SwipeCarState extends State<SwipeCar> {
           : BoxDecoration(),
       child: PageView.builder(
         controller: pageController,
-        itemCount: url.length,
+        itemCount: 1,
         itemBuilder: (context, index) {
           return Hero(
             tag: widget.vehicleId.toString(),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: b * 10),
               child: CachedImage(
-                imgUrl: url[index],
+                imgUrl: widget.imgUrl,
                 height: h * 1200,
                 width: SizeConfig.screenWidth,
                 vehicleId: widget.vehicleId.toString(),
